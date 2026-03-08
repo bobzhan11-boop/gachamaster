@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>GachaMaster - Capsule Collection Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Login/Register Overlay -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-panel">
+      <div class="login-logo">
+        <span class="login-logo-emoji">🎰</span>
+        <h1 class="login-title">GachaMaster</h1>
+        <p class="login-subtitle">Capsule Collection Game</p>
+      </div>
+
+      <!-- Login Form -->
+      <!-- Login Form -->
+      <div class="login-form" id="loginForm">
+        <h2 class="form-heading">Welcome Back</h2>
+        <div class="form-group">
+          <input type="email" class="form-input" id="loginEmail" placeholder="Email address" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-input" id="loginPassword" placeholder="Password" autocomplete="current-password">
+        </div>
+        <button class="form-btn form-btn-primary" onclick="handleLogin()">
+          Log In
+        </button>
+        <button class="form-btn form-btn-link" onclick="showForgotPasswordForm()">
+          Forgot password?
+        </button>
+        <div class="form-divider"><span>or</span></div>
+        <button class="form-btn form-btn-secondary" onclick="showRegisterForm()">
+          Create Account
+        </button>
+        <button class="form-btn form-btn-guest" onclick="playAsGuest()">
+          🎮 Play as Guest
+        </button>
+        <p class="form-hint">Guest mode: localStorage only, no cloud saves</p>
+      </div>
+
+      <!-- Forgot Password Form -->
+      <div class="login-form hidden" id="forgotPasswordForm">
+        <h2 class="form-heading">Reset Password</h2>
+        <p class="form-hint" style="margin-bottom:12px;font-size:13px;">Enter your email and we'll send you a reset link.</p>
+        <div class="form-group">
+          <input type="email" class="form-input" id="resetEmail" placeholder="Email address" autocomplete="email">
+        </div>
+        <button class="form-btn form-btn-primary" onclick="handleForgotPassword()">
+          Send Reset Link
+        </button>
+        <div class="form-divider"><span>or</span></div>
+        <button class="form-btn form-btn-secondary" onclick="showLoginForm()">
+          Back to Login
+        </button>
+      </div>
+
+      <!-- Register Form -->
+      <div class="login-form hidden" id="registerForm">
+        <h2 class="form-heading">Create Account</h2>
+        <div class="form-group">
+          <input type="text" class="form-input" id="regUsername" placeholder="Username (3-20 chars, letters/numbers/_)" autocomplete="username" maxlength="20">
+          <span class="form-hint-inline" id="regUsernameHint"></span>
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-input" id="regEmail" placeholder="Email address" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-input" id="regPassword" placeholder="Password" autocomplete="new-password" oninput="updatePasswordStrength()">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-input" id="regPasswordConfirm" placeholder="Confirm Password" autocomplete="new-password" oninput="checkPasswordMatch()">
+          <span class="form-hint-inline" id="regPasswordMatchHint"></span>
+        </div>
+
+        <!-- Password Strength Indicator -->
+        <div class="password-strength" id="passwordStrength">
+          <div class="strength-bar">
+            <div class="strength-fill" id="strengthFill"></div>
+          </div>
+          <span class="strength-label" id="strengthLabel"></span>
+        </div>
+        <div class="password-rules" id="passwordRules">
+          <!-- Populated by JS -->
+        </div>
+
+        <button class="form-btn form-btn-primary" onclick="handleRegister()">
+          Create Account
+        </button>
+        <div class="form-divider"><span>or</span></div>
+        <button class="form-btn form-btn-secondary" onclick="showLoginForm()">
+          Back to Login
+        </button>
+        <button class="form-btn form-btn-guest" onclick="playAsGuest()">
+          🎮 Play as Guest
+        </button>
+      </div>
+
+      <!-- Login Error Message -->
+      <div class="login-message hidden" id="loginMessage"></div>
+
+      <!-- Player Count on Login Screen -->
+      <div class="login-player-count" id="loginPlayerCount"></div>
+    </div>
+  </div>
+
+  <!-- Top Bar -->
+  <header id="topBar">
+    <div class="top-left">
+      <h1 class="game-title">GachaMaster</h1>
+      <div class="player-count-badge hidden" id="playerCountBadge">
+        <span class="online-dot"></span>
+        <span id="playerCountText">0 online</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="coin-display" id="coinDisplay">
+        <span class="coin-icon">&#9733;</span>
+        <span class="coin-amount" id="coinAmount">100</span>
+      </div>
+      <div class="gem-display">
+        <span class="gem-icon">&#9830;</span>
+        <span class="gem-amount" id="gemAmount">5</span>
+      </div>
+      <div class="user-badge hidden" id="userBadge" onclick="showUserMenu()">
+        <span class="user-avatar" id="userAvatar">🎮</span>
+        <span class="user-name" id="userName">Guest</span>
+      </div>
+      <button class="feedback-top-btn" onclick="openFeedback()" title="Send Feedback">&#128172;</button>
+    </div>
+  </header>
+
+  <!-- Main Game Area -->
+  <main id="gameArea">
+
+    <!-- Machine Selection Tabs -->
+    <div class="machine-tabs" id="machineTabs">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Capsule Machine -->
+    <div class="machine-wrapper">
+      <div class="machine" id="machine">
+        <!-- Machine Top -->
+        <div class="machine-top">
+          <div class="machine-name" id="machineName">Starter Machine</div>
+          <div class="machine-rates" id="machineRates"></div>
+        </div>
+
+        <!-- Machine Body (Capsule Globe) -->
+        <div class="machine-body">
+          <div class="globe" id="globe">
+            <div class="capsules-inside" id="capsulesInside">
+              <!-- Floating capsules rendered by JS -->
+            </div>
+            <div class="globe-shine"></div>
+          </div>
+        </div>
+
+        <!-- Free Pull Timer -->
+        <div class="free-pull-bar" id="freePullBar">
+          <button class="free-pull-btn" id="freePullBtn" onclick="freePull()" disabled>
+            <span class="free-icon">&#127873;</span>
+            <span class="free-text" id="freePullText">FREE in 5:00</span>
+          </button>
+        </div>
+
+        <!-- Machine Base -->
+        <div class="machine-base">
+          <div class="pull-cost" id="pullCost">
+            <span class="coin-icon">&#9733;</span> <span id="costAmount">10</span>
+          </div>
+          <button class="pull-btn" id="pullBtn" onclick="pull()">
+            <span class="pull-text">PULL!</span>
+          </button>
+          <button class="pull-btn pull-10" id="pull10Btn" onclick="pull10()">
+            <span class="pull-text">x10</span>
+          </button>
+        </div>
+
+        <!-- Watch Ad Button -->
+        <div class="ad-btn-wrap">
+          <button class="ad-watch-btn" id="adWatchBtn" onclick="startWatchAd('machine')">
+            <span class="ad-icon">&#9654;</span>
+            <span class="ad-label">Watch Ad</span>
+            <span class="ad-reward">+30 &#9733;</span>
+          </button>
+          <span class="ad-remaining" id="adRemaining"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capsule Reveal Overlay -->
+    <div class="reveal-overlay" id="revealOverlay">
+      <div class="reveal-container" id="revealContainer">
+        <!-- Single pull reveal -->
+        <div class="capsule-reveal" id="capsuleReveal">
+          <div class="capsule-shell" id="capsuleShell">
+            <div class="capsule-top"></div>
+            <div class="capsule-bottom"></div>
+          </div>
+        </div>
+        <div class="item-reveal hidden" id="itemReveal">
+          <div class="item-rarity-bg" id="itemRarityBg"></div>
+          <div class="item-emoji" id="itemEmoji"></div>
+          <div class="item-name" id="itemName"></div>
+          <div class="item-rarity-label" id="itemRarityLabel"></div>
+          <div class="item-desc" id="itemDesc"></div>
+          <div class="reveal-new hidden" id="revealNew">NEW!</div>
+        </div>
+        <!-- Multi pull reveal -->
+        <div class="multi-reveal hidden" id="multiReveal">
+          <div class="multi-grid" id="multiGrid"></div>
+        </div>
+        <button class="reveal-close" id="revealClose" onclick="closeReveal()">
+          <span id="revealCloseText">TAP TO OPEN</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav id="bottomNav">
+    <button class="nav-btn active" data-tab="machine" onclick="switchTab('machine')">
+      <span class="nav-icon">&#127922;</span>
+      <span class="nav-label">Machine</span>
+    </button>
+    <button class="nav-btn" data-tab="rewards" onclick="switchTab('rewards')">
+      <span class="nav-icon">&#127873;</span>
+      <span class="nav-label">Rewards</span>
+      <span class="nav-badge hidden" id="rewardBadge">!</span>
+    </button>
+    <button class="nav-btn" data-tab="collection" onclick="switchTab('collection')">
+      <span class="nav-icon">&#128218;</span>
+      <span class="nav-label">Collection</span>
+    </button>
+    <button class="nav-btn" data-tab="shop" onclick="switchTab('shop')">
+      <span class="nav-icon">&#128176;</span>
+      <span class="nav-label">Shop</span>
+    </button>
+    <button class="nav-btn" data-tab="stats" onclick="switchTab('stats')">
+      <span class="nav-icon">&#128202;</span>
+      <span class="nav-label">Stats</span>
+    </button>
+    <button class="nav-btn" data-tab="chat" onclick="switchTab('chat')">
+      <span class="nav-icon">💬</span>
+      <span class="nav-label">Chat</span>
+      <span class="nav-badge hidden" id="chatBadge">!</span>
+    </button>
+  </nav>
+
+  <!-- Rewards Panel -->
+  <div class="panel hidden" id="rewardsPanel">
+    <div class="panel-header">
+      <h2>Rewards Center</h2>
+    </div>
+
+    <!-- Daily Check-in -->
+    <div class="reward-section">
+      <h3 class="reward-title">&#128197; Daily Check-in <span class="checkin-streak" id="checkinStreak">Day 0/7</span></h3>
+      <div class="checkin-grid" id="checkinGrid">
+        <!-- 7 days injected by JS -->
+      </div>
+      <button class="btn btn-primary checkin-btn" id="checkinBtn" onclick="dailyCheckin()">Check In Today!</button>
+    </div>
+
+    <!-- Achievements -->
+    <div class="reward-section">
+      <h3 class="reward-title">&#127942; Achievements</h3>
+      <div class="achievements-list" id="achievementsList">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Watch Ads for Rewards -->
+    <div class="reward-section">
+      <h3 class="reward-title">&#127916; Watch Ads <span class="ad-count-badge" id="adCountBadge">0/10 today</span></h3>
+      <div class="ad-options">
+        <div class="ad-option-card" onclick="startWatchAd('coins30')">
+          <span class="ad-opt-icon">&#9733;</span>
+          <div class="ad-opt-info">
+            <div class="ad-opt-name">Quick Coins</div>
+            <div class="ad-opt-desc">Watch a short ad</div>
+          </div>
+          <div class="ad-opt-reward">+30 &#9733;</div>
+        </div>
+        <div class="ad-option-card" onclick="startWatchAd('coins80')">
+          <span class="ad-opt-icon">&#127873;</span>
+          <div class="ad-opt-info">
+            <div class="ad-opt-name">Coin Bundle</div>
+            <div class="ad-opt-desc">Watch a longer ad</div>
+          </div>
+          <div class="ad-opt-reward">+80 &#9733;</div>
+        </div>
+        <div class="ad-option-card" onclick="startWatchAd('gem')">
+          <span class="ad-opt-icon">&#9830;</span>
+          <div class="ad-opt-info">
+            <div class="ad-opt-name">Rare Gem</div>
+            <div class="ad-opt-desc">Watch a premium ad</div>
+          </div>
+          <div class="ad-opt-reward">+1 &#9830;</div>
+        </div>
+        <div class="ad-option-card" onclick="startWatchAd('freepull')">
+          <span class="ad-opt-icon">&#127922;</span>
+          <div class="ad-opt-info">
+            <div class="ad-opt-name">Free Pull</div>
+            <div class="ad-opt-desc">Watch ad, get free pull</div>
+          </div>
+          <div class="ad-opt-reward">1x Pull</div>
+        </div>
+        <div class="ad-option-card" onclick="startWatchAd('luck2x')">
+          <span class="ad-opt-icon">&#127808;</span>
+          <div class="ad-opt-info">
+            <div class="ad-opt-name">2x Luck Boost</div>
+            <div class="ad-opt-desc">Double SSR rate for 3 min</div>
+          </div>
+          <div class="ad-opt-reward">3 min</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sell Duplicates -->
+    <div class="reward-section">
+      <h3 class="reward-title">&#128184; Sell Duplicates</h3>
+      <p class="sell-desc">Sell extra copies of items you already own for coins.</p>
+      <div class="sell-grid" id="sellGrid">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Public Feedback Section -->
+    <div class="reward-section" id="publicFeedbackSection">
+      <h3 class="reward-title">💬 Community Feedback</h3>
+      <div class="public-feedback-list" id="publicFeedbackList">
+        <p class="fb-loading">Loading community feedback...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collection Panel -->
+  <div class="panel hidden" id="collectionPanel">
+    <div class="panel-header">
+      <h2>Collection Book</h2>
+      <div class="collection-progress" id="collectionProgress">0 / 0</div>
+    </div>
+    <div class="collection-filter" id="collectionFilter">
+      <button class="filter-btn active" data-rarity="all">All</button>
+      <button class="filter-btn" data-rarity="C">Common</button>
+      <button class="filter-btn" data-rarity="R">Rare</button>
+      <button class="filter-btn" data-rarity="SR">SR</button>
+      <button class="filter-btn" data-rarity="SSR">SSR</button>
+    </div>
+    <div class="collection-grid" id="collectionGrid">
+      <!-- Items injected by JS -->
+    </div>
+  </div>
+
+  <!-- Shop Panel -->
+  <div class="panel hidden" id="shopPanel">
+    <div class="panel-header">
+      <h2>Upgrade Shop</h2>
+    </div>
+    <div class="shop-items" id="shopItems">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- Stats Panel -->
+  <div class="panel hidden" id="statsPanel">
+    <div class="panel-header">
+      <h2>Statistics</h2>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="panel hidden" id="chatPanel">
+    <div class="panel-header">
+      <h2>💬 Chat</h2>
+      <div class="chat-online-count" id="chatOnlineCount">
+        <span class="online-dot"></span>
+        <span id="chatOnlineText">0 online</span>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty" id="chatEmpty">
+        <p>No messages yet. Say hello!</p>
+      </div>
+    </div>
+    <div class="chat-input-bar" id="chatInputBar">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." maxlength="500" onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send-btn" onclick="sendChat()">Send</button>
+    </div>
+    <div class="chat-login-prompt hidden" id="chatLoginPrompt">
+      <p>Log in to chat with other players!</p>
+    </div>
+  </div>
+
+  <!-- Ad Overlay (simulates watching an ad) -->
+  <div class="ad-overlay" id="adOverlay">
+    <div class="ad-content">
+      <div class="ad-header">
+        <span class="ad-sponsor">Sponsored</span>
+        <span class="ad-skip" id="adSkip"></span>
+      </div>
+      <div class="ad-body">
+        <div class="ad-fake">
+          <div class="ad-fake-logo">&#9733; GACHA PREMIUM &#9733;</div>
+          <div class="ad-fake-text">Get 2x drop rates & unlimited pulls!</div>
+          <div class="ad-fake-sub">Upgrade to Premium today</div>
+          <div class="ad-fake-cta">LEARN MORE</div>
+        </div>
+      </div>
+      <div class="ad-progress-bar">
+        <div class="ad-progress-fill" id="adProgressFill"></div>
+      </div>
+      <div class="ad-timer" id="adTimer">Reward in 5s...</div>
+    </div>
+  </div>
+
+  <!-- Feedback Overlay -->
+  <div class="feedback-overlay" id="feedbackOverlay">
+    <div class="feedback-panel">
+      <div class="feedback-header">
+        <h2>&#128172; Send Feedback</h2>
+        <button class="feedback-close-btn" onclick="closeFeedback()">&times;</button>
+      </div>
+      <div class="feedback-body">
+        <p class="feedback-subtitle">Help us make GachaMaster better!</p>
+
+        <div class="feedback-type-select">
+          <button class="fb-type-btn active" data-type="suggestion" onclick="selectFeedbackType('suggestion')">&#128161; Suggestion</button>
+          <button class="fb-type-btn" data-type="bug" onclick="selectFeedbackType('bug')">&#128027; Bug Report</button>
+          <button class="fb-type-btn" data-type="love" onclick="selectFeedbackType('love')">&#10084;&#65039; Love It!</button>
+        </div>
+
+        <textarea class="feedback-textarea" id="feedbackText" placeholder="Tell us what you think..." rows="5"></textarea>
+
+        <div class="feedback-rating">
+          <span class="rating-label">Rate your experience:</span>
+          <div class="star-rating" id="starRating">
+            <span class="star" data-star="1" onclick="setRating(1)">&#9734;</span>
+            <span class="star" data-star="2" onclick="setRating(2)">&#9734;</span>
+            <span class="star" data-star="3" onclick="setRating(3)">&#9734;</span>
+            <span class="star" data-star="4" onclick="setRating(4)">&#9734;</span>
+            <span class="star" data-star="5" onclick="setRating(5)">&#9734;</span>
+          </div>
+        </div>
+
+        <button class="feedback-submit-btn" id="feedbackSubmitBtn" onclick="submitFeedback()">
+          &#128640; Send Feedback
+        </button>
+
+        <div class="feedback-alt">
+          <p>Or reach us directly:</p>
+          <a class="feedback-email-link" id="feedbackEmailLink" href="mailto:feedback@gachamaster.com?subject=GachaMaster Feedback" target="_blank">
+            &#9993; Email Us
+          </a>
+          <a class="feedback-discord-link" href="#" onclick="showToast('Discord coming soon!');return false;">
+            &#128172; Discord Community
+          </a>
+        </div>
+
+        <!-- Past feedback -->
+        <div class="feedback-history" id="feedbackHistory">
+          <h4>Your Past Feedback</h4>
+          <div id="feedbackHistoryList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Menu Overlay -->
+  <div class="user-menu-overlay hidden" id="userMenuOverlay" onclick="hideUserMenu()">
+    <div class="user-menu" onclick="event.stopPropagation()">
+      <div class="user-menu-header">
+        <span class="user-menu-avatar" id="userMenuAvatar">🎮</span>
+        <div class="user-menu-info">
+          <span class="user-menu-name" id="userMenuName">Guest</span>
+          <span class="user-menu-email" id="userMenuEmail"></span>
+        </div>
+      </div>
+      <div class="user-menu-actions">
+        <button class="user-menu-btn" id="cloudSaveBtn" onclick="manualCloudSave()">☁️ Save to Cloud</button>
+        <button class="user-menu-btn" id="cloudLoadBtn" onclick="manualCloudLoad()">📥 Load from Cloud</button>
+        <button class="user-menu-btn hidden" id="upgradeAccountBtn" onclick="showRegisterForm();hideUserMenu();">🔗 Create Account</button>
+        <button class="user-menu-btn user-menu-btn-danger" id="logoutBtn" onclick="handleLogout()">🚪 Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Floating Coins Animation Container -->
+  <div class="float-coins" id="floatCoins"></div>
+
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
