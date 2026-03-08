@@ -1910,3 +1910,27 @@ async function startApp() {
 }
 
 startApp();
+
+// ===== Admin Console (password protected) =====
+window.admin = function(password) {
+  if (password !== 'bob2026master') {
+    console.log('%c Access Denied ', 'background:red;color:white;font-size:16px;');
+    return;
+  }
+  console.log('%c Admin Mode Activated ', 'background:green;color:white;font-size:16px;');
+  return {
+    addCoins: function(n) { state.coins += n; saveGame(); updateUI(); console.log('Added ' + n + ' coins'); },
+    addGems: function(n) { state.gems += n; saveGame(); updateUI(); console.log('Added ' + n + ' gems'); },
+    maxOut: function() { state.coins = 999999999; state.gems = 99999; saveGame(); updateUI(); console.log('Maxed out!'); },
+    unlockAll: function() {
+      MACHINES.forEach(function(m) { if (!state.unlockedMachines.includes(m.id)) state.unlockedMachines.push(m.id); });
+      saveGame(); renderMachine(); console.log('All machines unlocked!');
+    },
+    reset: function() { localStorage.removeItem('gachamaster-save'); location.reload(); },
+    getState: function() { return JSON.parse(JSON.stringify(state)); },
+  };
+};
+
+// ===== Protect state from casual console access =====
+Object.defineProperty(window, 'state', { get: function() { return undefined; }, set: function() {}, configurable: false });
+Object.defineProperty(window, 'saveGame', { get: function() { return undefined; }, configurable: false });
