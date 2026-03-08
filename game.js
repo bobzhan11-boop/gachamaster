@@ -152,6 +152,72 @@ const ITEMS = {
     { id: "f_13", name: "Ambrosia", emoji: "✨", rarity: "SSR", desc: "Food of the gods!" },
     { id: "f_14", name: "Rainbow Cake", emoji: "🌈", rarity: "SSR", desc: "Tastes like pure happiness!" },
   ],
+  anime: [
+    // Common (48%)
+    { id: "an_01", name: "Kunai", emoji: "🗡️", rarity: "C", desc: "A sharp throwing knife" },
+    { id: "an_02", name: "Scroll", emoji: "📜", rarity: "C", desc: "Ancient jutsu scroll" },
+    { id: "an_03", name: "Headband", emoji: "🎗️", rarity: "C", desc: "Village headband" },
+    { id: "an_04", name: "Rice Ball", emoji: "🍙", rarity: "C", desc: "Ninja fuel" },
+    { id: "an_05", name: "Shuriken", emoji: "✴️", rarity: "C", desc: "Spinning star blade" },
+    { id: "an_06", name: "Sandals", emoji: "🩴", rarity: "C", desc: "Standard ninja sandals" },
+    { id: "an_07", name: "Smoke Bomb", emoji: "💨", rarity: "C", desc: "Poof! Vanish!" },
+    // Rare (28%)
+    { id: "an_08", name: "Shadow Clone", emoji: "👥", rarity: "R", desc: "Is that the real one?" },
+    { id: "an_09", name: "Summoning Toad", emoji: "🐸", rarity: "R", desc: "A loyal summoned toad" },
+    { id: "an_10", name: "Chakra Orb", emoji: "🔵", rarity: "R", desc: "Pure concentrated chakra" },
+    { id: "an_11", name: "Puppet", emoji: "🎭", rarity: "R", desc: "Battle puppet with hidden weapons" },
+    { id: "an_12", name: "Sand Gourd", emoji: "🏺", rarity: "R", desc: "Contains enchanted sand" },
+    // SR (17%)
+    { id: "an_13", name: "Sharingan Eye", emoji: "👁️", rarity: "SR", desc: "The eye that copies all" },
+    { id: "an_14", name: "Rasengan", emoji: "🌀", rarity: "SR", desc: "Spiraling sphere of power" },
+    // SSR (7%)
+    { id: "an_15", name: "Nine-Tail Fox", emoji: "🦊", rarity: "SSR", desc: "Legendary tailed beast!" },
+    { id: "an_16", name: "Sage Mode", emoji: "🐉", rarity: "SSR", desc: "Ultimate sage transformation!" },
+  ],
+  heroes: [
+    // Common (45%)
+    { id: "h_01", name: "Shield", emoji: "🛡️", rarity: "C", desc: "A vibranium shield" },
+    { id: "h_02", name: "Web Shooter", emoji: "🕸️", rarity: "C", desc: "Thwip thwip!" },
+    { id: "h_03", name: "Mask", emoji: "🎭", rarity: "C", desc: "Secret identity protection" },
+    { id: "h_04", name: "Cape", emoji: "🦸", rarity: "C", desc: "No capes! ...or maybe yes" },
+    { id: "h_05", name: "Boots", emoji: "🥾", rarity: "C", desc: "Rocket-powered boots" },
+    { id: "h_06", name: "Gloves", emoji: "🧤", rarity: "C", desc: "Power-enhancing gloves" },
+    { id: "h_07", name: "Belt", emoji: "⚙️", rarity: "C", desc: "Utility belt with gadgets" },
+    // Rare (28%)
+    { id: "h_08", name: "Hammer", emoji: "🔨", rarity: "R", desc: "Only the worthy may lift it" },
+    { id: "h_09", name: "Iron Armor", emoji: "🤖", rarity: "R", desc: "High-tech power suit" },
+    { id: "h_10", name: "Arrow", emoji: "🏹", rarity: "R", desc: "Never misses the mark" },
+    { id: "h_11", name: "Claws", emoji: "✊", rarity: "R", desc: "Adamantium claws" },
+    { id: "h_12", name: "Ring", emoji: "💚", rarity: "R", desc: "Power ring of will" },
+    // SR (18%)
+    { id: "h_13", name: "Arc Reactor", emoji: "💙", rarity: "SR", desc: "Miniaturized arc reactor" },
+    { id: "h_14", name: "Mjolnir", emoji: "⚡", rarity: "SR", desc: "Thunder god's weapon" },
+    // SSR (9%)
+    { id: "h_15", name: "Infinity Gauntlet", emoji: "🌟", rarity: "SSR", desc: "Snap! Half the universe!" },
+    { id: "h_16", name: "Vibranium Suit", emoji: "🐾", rarity: "SSR", desc: "The Black Panther rises!" },
+  ],
+  magic: [
+    // Common (45%)
+    { id: "mk_01", name: "Castle", emoji: "🏰", rarity: "C", desc: "A fairytale castle" },
+    { id: "mk_02", name: "Crown", emoji: "👑", rarity: "C", desc: "Fit for royalty" },
+    { id: "mk_03", name: "Rose", emoji: "🌹", rarity: "C", desc: "An enchanted rose" },
+    { id: "mk_04", name: "Apple", emoji: "🍎", rarity: "C", desc: "Don't eat this one!" },
+    { id: "mk_05", name: "Mirror", emoji: "🪞", rarity: "C", desc: "Mirror mirror on the wall" },
+    { id: "mk_06", name: "Pumpkin", emoji: "🎃", rarity: "C", desc: "Turns into a carriage at midnight" },
+    { id: "mk_07", name: "Tiara", emoji: "👸", rarity: "C", desc: "A princess tiara" },
+    // Rare (27%)
+    { id: "mk_08", name: "Glass Slipper", emoji: "👠", rarity: "R", desc: "Perfect fit!" },
+    { id: "mk_09", name: "Magic Lamp", emoji: "🪔", rarity: "R", desc: "Three wishes inside" },
+    { id: "mk_10", name: "Fairy", emoji: "🧚", rarity: "R", desc: "Grants wishes with pixie dust" },
+    { id: "mk_11", name: "Magic Carpet", emoji: "🪁", rarity: "R", desc: "A whole new world!" },
+    { id: "mk_12", name: "Snowflake", emoji: "❄️", rarity: "R", desc: "Let it go!" },
+    // SR (19%)
+    { id: "mk_13", name: "Trident", emoji: "🔱", rarity: "SR", desc: "Rules the ocean waves" },
+    { id: "mk_14", name: "Magic Wand", emoji: "🪄", rarity: "SR", desc: "Bibbidi-bobbidi-boo!" },
+    // SSR (9%)
+    { id: "mk_15", name: "Enchanted Beast", emoji: "🦁", rarity: "SSR", desc: "True love breaks the curse!" },
+    { id: "mk_16", name: "Genie", emoji: "🧞", rarity: "SSR", desc: "Phenomenal cosmic power!" },
+  ],
 };
 
 // ===== Machine Definitions =====
@@ -164,6 +230,12 @@ const MACHINES = [
     rates: { C: 50, R: 28, SR: 16, SSR: 6 } },
   { id: "food", name: "Foodie Paradise", collection: "food", cost: 20, unlockCost: 1000, unlockGems: 1,
     rates: { C: 52, R: 28, SR: 14, SSR: 6 } },
+  { id: "anime", name: "Anime Heroes", collection: "anime", cost: 30, unlockCost: 3000, unlockGems: 5,
+    rates: { C: 48, R: 28, SR: 17, SSR: 7 } },
+  { id: "heroes", name: "Super Heroes", collection: "heroes", cost: 35, unlockCost: 5000, unlockGems: 8,
+    rates: { C: 45, R: 28, SR: 18, SSR: 9 } },
+  { id: "magic", name: "Magic Kingdom", collection: "magic", cost: 40, unlockCost: 8000, unlockGems: 10,
+    rates: { C: 45, R: 27, SR: 19, SSR: 9 } },
 ];
 
 // ===== Upgrades =====
@@ -197,9 +269,29 @@ const ACHIEVEMENTS = [
   { id: "ssr_5", name: "Lucky Star", emoji: "💫", desc: "Get 5 SSR items", target: 5, stat: "totalSSR", reward: 500, rewardType: "coins" },
   { id: "collect_10", name: "Collector", emoji: "📦", desc: "Collect 10 unique items", target: 10, stat: "uniqueItems", reward: 150, rewardType: "coins" },
   { id: "collect_30", name: "Hoarder", emoji: "🏠", desc: "Collect 30 unique items", target: 30, stat: "uniqueItems", reward: 500, rewardType: "coins" },
-  { id: "collect_all", name: "Completionist", emoji: "🏆", desc: "Collect ALL items", target: 63, stat: "uniqueItems", reward: 10, rewardType: "gems" },
+  { id: "collect_all", name: "Completionist", emoji: "🏆", desc: "Collect ALL items", target: 111, stat: "uniqueItems", reward: 10, rewardType: "gems" },
   { id: "machine_2", name: "Explorer", emoji: "🗺️", desc: "Unlock 2 machines", target: 2, stat: "machinesUnlocked", reward: 200, rewardType: "coins" },
-  { id: "machine_all", name: "Tycoon", emoji: "💰", desc: "Unlock ALL machines", target: 4, stat: "machinesUnlocked", reward: 5, rewardType: "gems" },
+  { id: "machine_3", name: "Adventurer", emoji: "🧭", desc: "Unlock 3 machines", target: 3, stat: "machinesUnlocked", reward: 500, rewardType: "coins" },
+  { id: "machine_all", name: "Tycoon", emoji: "💰", desc: "Unlock ALL machines", target: 7, stat: "machinesUnlocked", reward: 5, rewardType: "gems" },
+  // SSR tiers
+  { id: "ssr_10", name: "SSR Hunter", emoji: "🎯", desc: "Get 10 SSR items", target: 10, stat: "totalSSR", reward: 1000, rewardType: "coins" },
+  { id: "ssr_25", name: "SSR Legend", emoji: "🏅", desc: "Get 25 SSR items", target: 25, stat: "totalSSR", reward: 3, rewardType: "gems" },
+  { id: "ssr_50", name: "SSR God", emoji: "👼", desc: "Get 50 SSR items", target: 50, stat: "totalSSR", reward: 10, rewardType: "gems" },
+  // Sell tiers
+  { id: "sell_1", name: "First Sale", emoji: "🏷️", desc: "Sell 1 duplicate", target: 1, stat: "totalSold", reward: 30, rewardType: "coins" },
+  { id: "sell_10", name: "Merchant", emoji: "🛒", desc: "Sell 10 duplicates", target: 10, stat: "totalSold", reward: 200, rewardType: "coins" },
+  { id: "sell_50", name: "Trade Master", emoji: "⚖️", desc: "Sell 50 duplicates", target: 50, stat: "totalSold", reward: 2, rewardType: "gems" },
+  { id: "sell_100", name: "Trade King", emoji: "🤴", desc: "Sell 100 duplicates", target: 100, stat: "totalSold", reward: 5, rewardType: "gems" },
+  // Pull tiers
+  { id: "pull_200", name: "Obsessed", emoji: "😵", desc: "Pull 200 capsules", target: 200, stat: "totalPulls", reward: 500, rewardType: "coins" },
+  { id: "pull_1000", name: "No Life", emoji: "💀", desc: "Pull 1000 capsules", target: 1000, stat: "totalPulls", reward: 10, rewardType: "gems" },
+  // Collection tiers
+  { id: "collect_50", name: "Museum Curator", emoji: "🏛️", desc: "Collect 50 unique items", target: 50, stat: "uniqueItems", reward: 3, rewardType: "gems" },
+  { id: "collect_80", name: "Almost There", emoji: "🔥", desc: "Collect 80 unique items", target: 80, stat: "uniqueItems", reward: 5, rewardType: "gems" },
+  // Coin earning tiers
+  { id: "earn_1k", name: "Money Maker", emoji: "💵", desc: "Earn 1,000 total coins", target: 1000, stat: "totalCoinsEarned", reward: 100, rewardType: "coins" },
+  { id: "earn_10k", name: "Rich", emoji: "💰", desc: "Earn 10,000 total coins", target: 10000, stat: "totalCoinsEarned", reward: 3, rewardType: "gems" },
+  { id: "earn_50k", name: "Millionaire", emoji: "🤑", desc: "Earn 50,000 total coins", target: 50000, stat: "totalCoinsEarned", reward: 10, rewardType: "gems" },
 ];
 
 // ===== Daily Check-in Rewards =====
@@ -225,6 +317,7 @@ let state = {
   totalSSR: 0,
   totalCoinsEarned: 100,
   totalCoinsSpent: 0,
+  totalSold: 0,
   // Daily check-in
   checkinDay: 0,        // 0-6 (which day in the 7-day cycle)
   lastCheckin: null,     // date string "YYYY-MM-DD"
@@ -848,6 +941,8 @@ function getAchievementProgress(ach) {
     case "totalSSR": return state.totalSSR;
     case "uniqueItems": return Object.keys(state.collection).length;
     case "machinesUnlocked": return state.unlockedMachines.length;
+    case "totalSold": return state.totalSold || 0;
+    case "totalCoinsEarned": return state.totalCoinsEarned || 0;
     default: return 0;
   }
 }
@@ -883,6 +978,7 @@ function sellDuplicate(itemId) {
   const sellPrice = { C: 3, R: 8, SR: 25, SSR: 80 }[item.rarity];
 
   state.collection[itemId]--;
+  state.totalSold = (state.totalSold || 0) + 1;
   state.coins += sellPrice;
   state.totalCoinsEarned += sellPrice;
   playSound("coin");
