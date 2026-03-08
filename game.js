@@ -1863,16 +1863,38 @@ async function startApp() {
   }
 
   if (sb) {
+    // Check if user arrived from email confirmation link
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+    const isEmailConfirm = hash.includes('type=signup') || hash.includes('type=email') ||
+                           params.get('type') === 'signup' || params.get('type') === 'email';
+
     // Supabase is ready - check for existing session
     try {
       const user = await getCurrentSession();
       if (user) {
+        if (isEmailConfirm) {
+          // Clean URL
+          history.replaceState(null, '', window.location.pathname);
+          showToast("Email verified! Welcome to GachaMaster!");
+        }
         await onLoginSuccess();
         return;
       }
     } catch (e) {
       console.warn('Session check failed:', e);
     }
+
+    // If they came from confirmation but no session yet, show success on login page
+    if (isEmailConfirm) {
+      history.replaceState(null, '', window.location.pathname);
+      updatePlayerCount();
+      renderPasswordRules();
+      document.getElementById("loginOverlay").classList.remove("hidden");
+      showLoginMessage("Email verified successfully! You can now log in.", "success");
+      return;
+    }
+
     // Show login screen
     updatePlayerCount();
     renderPasswordRules();
