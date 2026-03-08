@@ -327,19 +327,9 @@ let state = {
   claimedAchievements: [],
 };
 
-// Per-user save key (currentUser comes from supabase-config.js which loads first)
-let isGuest = true;
-
 // Load save
-function getSaveKey() {
-  if (!isGuest && currentUser && currentUser.id) {
-    return "gachamaster-save-" + currentUser.id;
-  }
-  return "gachamaster-save";
-}
-
 function loadGame() {
-  const saved = localStorage.getItem(getSaveKey());
+  const saved = localStorage.getItem("gachamaster-save");
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
@@ -349,7 +339,7 @@ function loadGame() {
 }
 
 function saveGame() {
-  localStorage.setItem(getSaveKey(), JSON.stringify(state));
+  localStorage.setItem("gachamaster-save", JSON.stringify(state));
 }
 
 loadGame();
@@ -1409,7 +1399,7 @@ function renderFeedbackHistory() {
 // SUPABASE INTEGRATION - Login, Cloud Save, Chat, Public Feedback
 // ===================================================================
 
-// isGuest is declared near the top (before getSaveKey)
+let isGuest = true;
 let cloudSaveInterval = null;
 
 // ===== Login / Register UI =====
@@ -1628,34 +1618,15 @@ function playAsGuest() {
   initGame();
 }
 
-function getDefaultState() {
-  return {
-    coins: 100, gems: 5, currentMachine: "starter",
-    unlockedMachines: ["starter"], collection: {},
-    upgrades: { luck: 0, multi: 0, coins: 0, auto: 0 },
-    totalPulls: 0, totalSSR: 0, totalCoinsEarned: 100,
-    totalCoinsSpent: 0, totalSold: 0,
-    checkinDay: 0, lastCheckin: null,
-    lastFreePull: 0, claimedAchievements: [],
-  };
-}
-
 async function onLoginSuccess() {
   isGuest = false;
   document.getElementById("loginOverlay").classList.add("hidden");
   updateUserBadge();
 
-  // Reset state to defaults before loading this user's data
-  state = getDefaultState();
-
-  // Check for user-specific local save
-  const userSaveKey = "gachamaster-save-" + currentUser.id;
-  const localSave = localStorage.getItem(userSaveKey);
-
-  // Load cloud save
+  // Load cloud save - prefer cloud if newer
   const cloudResult = await loadFromCloud();
-
   if (cloudResult.data) {
+    const localSave = localStorage.getItem("gachamaster-save");
     let useCloud = true;
 
     if (localSave) {
@@ -1669,24 +1640,17 @@ async function onLoginSuccess() {
     }
 
     if (useCloud) {
-      state = { ...getDefaultState(), ...cloudResult.data };
-      saveGame();
+      state = { ...state, ...cloudResult.data };
+      saveGame(); // Save cloud data to localStorage too
       showToast("Cloud save loaded!");
     } else {
-      state = { ...getDefaultState(), ...JSON.parse(localSave) };
+      // Upload local data to cloud
       saveToCloud(state);
       showToast("Local save is newer, synced to cloud");
     }
-  } else if (localSave) {
-    // No cloud save but has local save for this user
-    try {
-      state = { ...getDefaultState(), ...JSON.parse(localSave) };
-    } catch (e) {}
-    saveToCloud(state);
   } else {
-    // Brand new user - fresh state, upload to cloud
+    // No cloud save - upload local
     saveToCloud(state);
-    saveGame();
   }
 
   initGame();
@@ -1760,8 +1724,6 @@ async function handleLogout() {
   }
   currentUser = null;
   isGuest = true;
-  // Reset state so next login doesn't bleed data
-  state = getDefaultState();
   stopCloudAutoSave();
   unsubscribeFromChat();
 
