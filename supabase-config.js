@@ -24,12 +24,22 @@ function isSupabaseConfigured() {
 function initSupabase() {
   if (!isSupabaseConfigured()) return false;
   try {
+    if (!window.supabase || !window.supabase.createClient) {
+      console.warn('Supabase CDN not loaded yet');
+      return false;
+    }
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     return true;
   } catch (e) {
     console.error('Supabase init failed:', e);
     return false;
   }
+}
+
+// Retry init - called when user tries to login but sb is null
+function ensureSupabase() {
+  if (sb) return true;
+  return initSupabase();
 }
 
 // ===================================================================

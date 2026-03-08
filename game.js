@@ -1381,6 +1381,11 @@ async function handleLogin() {
 
   if (!email || !password) { showLoginMessage("Please fill in all fields", "error"); return; }
 
+  if (!ensureSupabase()) {
+    showLoginMessage("Supabase is still loading. Please wait a moment and try again.", "error");
+    return;
+  }
+
   showLoginMessage("Logging in...", "info");
 
   try {
@@ -1434,19 +1439,14 @@ async function handleRegister() {
     return;
   }
 
+  if (!ensureSupabase()) {
+    showLoginMessage("Supabase is still loading. Please wait a moment and try again.", "error");
+    return;
+  }
+
   showLoginMessage("Creating account...", "info");
 
   try {
-    // Debug: check if Supabase is loaded
-    if (!window.supabase) {
-      showLoginMessage("ERROR: Supabase library not loaded. Check internet connection.", "error");
-      return;
-    }
-    if (!supabase) {
-      showLoginMessage("ERROR: Supabase client not initialized. Check URL and Key in supabase-config.js", "error");
-      return;
-    }
-
     const result = await signUpWithEmail(email, password, username);
     if (result.error) {
       showLoginMessage(result.error, "error");
@@ -1471,6 +1471,11 @@ async function handleForgotPassword() {
   const email = document.getElementById("resetEmail").value.trim();
   if (!email) {
     showLoginMessage("Please enter your email address", "error");
+    return;
+  }
+
+  if (!ensureSupabase()) {
+    showLoginMessage("Supabase is still loading. Please wait a moment and try again.", "error");
     return;
   }
 
@@ -1843,6 +1848,13 @@ function initGame() {
 
 async function startApp() {
   if (isSupabaseConfigured()) {
+    // Wait for CDN to load (up to 5 seconds)
+    let attempts = 0;
+    while (!window.supabase && attempts < 25) {
+      await new Promise(r => setTimeout(r, 200));
+      attempts++;
+    }
+
     const initialized = initSupabase();
     if (initialized) {
       // Check for existing session
