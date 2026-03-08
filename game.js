@@ -1847,32 +1847,36 @@ function initGame() {
 }
 
 async function startApp() {
-  if (isSupabaseConfigured()) {
-    // Wait for CDN to load (up to 5 seconds)
+  // sb may already be initialized by supabase-config.js auto-init
+  // If not, try again (handles edge cases with slow CDN)
+  if (isSupabaseConfigured() && !sb) {
     let attempts = 0;
     while (!window.supabase && attempts < 25) {
       await new Promise(r => setTimeout(r, 200));
       attempts++;
     }
+    initSupabase();
+  }
 
-    const initialized = initSupabase();
-    if (initialized) {
-      // Check for existing session
+  if (sb) {
+    // Supabase is ready - check for existing session
+    try {
       const user = await getCurrentSession();
       if (user) {
-        // Already logged in
         await onLoginSuccess();
         return;
       }
-      // Show login screen
-      updatePlayerCount();
-      renderPasswordRules();
-      document.getElementById("loginOverlay").classList.remove("hidden");
-      return;
+    } catch (e) {
+      console.warn('Session check failed:', e);
     }
+    // Show login screen
+    updatePlayerCount();
+    renderPasswordRules();
+    document.getElementById("loginOverlay").classList.remove("hidden");
+    return;
   }
 
-  // No Supabase configured - play as guest directly
+  // No Supabase available - play as guest directly
   document.getElementById("loginOverlay").classList.add("hidden");
   isGuest = true;
   updateUserBadge();

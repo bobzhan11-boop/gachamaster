@@ -42,6 +42,9 @@ function ensureSupabase() {
   return initSupabase();
 }
 
+// Auto-initialize immediately since CDN script loads before this file
+initSupabase();
+
 // ===================================================================
 // Authentication
 // ===================================================================
