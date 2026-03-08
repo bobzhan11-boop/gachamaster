@@ -327,6 +327,9 @@ let state = {
   claimedAchievements: [],
 };
 
+// Per-user save key (currentUser comes from supabase-config.js which loads first)
+let isGuest = true;
+
 // Load save
 function getSaveKey() {
   if (!isGuest && currentUser && currentUser.id) {
@@ -1406,7 +1409,7 @@ function renderFeedbackHistory() {
 // SUPABASE INTEGRATION - Login, Cloud Save, Chat, Public Feedback
 // ===================================================================
 
-let isGuest = true;
+// isGuest is declared near the top (before getSaveKey)
 let cloudSaveInterval = null;
 
 // ===== Login / Register UI =====
