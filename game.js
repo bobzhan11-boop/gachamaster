@@ -1930,7 +1930,3 @@ window.admin = function(password) {
     getState: function() { return JSON.parse(JSON.stringify(state)); },
   };
 };
-
-// ===== Protect state from casual console access =====
-Object.defineProperty(window, 'state', { get: function() { return undefined; }, set: function() {}, configurable: false });
-Object.defineProperty(window, 'saveGame', { get: function() { return undefined; }, configurable: false });
