@@ -29,6 +29,9 @@ html, body {
   color: var(--text);
   user-select: none;
   -webkit-user-select: none;
+  position: fixed; width: 100%;
+  overscroll-behavior: none;
+  touch-action: manipulation;
 }
 
 /* ===== Top Bar ===== */
@@ -88,7 +91,7 @@ html, body {
 /* Machine Tabs */
 .machine-tabs {
   display: flex; gap: 6px; padding: 12px 16px;
-  overflow-x: auto; width: 100%; justify-content: center;
+  overflow-x: auto; overflow-y: hidden; width: 100%; justify-content: center;
   scrollbar-width: none;
 }
 .machine-tabs::-webkit-scrollbar { display: none; }
