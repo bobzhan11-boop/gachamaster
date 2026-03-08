@@ -491,24 +491,49 @@ function renderMachine() {
   updateUI();
 }
 
+let pendingUnlockId = null;
+
 function selectMachine(id) {
   const machine = MACHINES.find(m => m.id === id);
   if (!state.unlockedMachines.includes(id)) {
-    // Try to unlock
-    if (state.coins >= machine.unlockCost && state.gems >= machine.unlockGems) {
-      state.coins -= machine.unlockCost;
-      state.gems -= machine.unlockGems;
-      state.totalCoinsSpent += machine.unlockCost;
-      state.unlockedMachines.push(id);
-      showToast(`Unlocked ${machine.name}!`);
-      playSound("buy");
-    } else {
+    // Check if player can afford it
+    if (state.coins < machine.unlockCost || state.gems < machine.unlockGems) {
       showToast(`Need ⭐${machine.unlockCost} + ♦${machine.unlockGems} to unlock`);
       return;
     }
+    // Show confirmation overlay
+    pendingUnlockId = id;
+    document.getElementById("confirmTitle").textContent = `Unlock ${machine.name}?`;
+    document.getElementById("confirmDesc").textContent = `This machine has ${ITEMS[machine.id].length} items to collect.`;
+    document.getElementById("confirmCost").innerHTML =
+      `<span class="cost-coins">⭐ ${machine.unlockCost.toLocaleString()}</span>` +
+      (machine.unlockGems > 0 ? `<span class="cost-gems">♦ ${machine.unlockGems}</span>` : '');
+    document.getElementById("confirmOverlay").classList.add("active");
+    return;
   }
   state.currentMachine = id;
   renderMachine();
+}
+
+function confirmUnlock() {
+  if (!pendingUnlockId) return;
+  const machine = MACHINES.find(m => m.id === pendingUnlockId);
+  if (state.coins >= machine.unlockCost && state.gems >= machine.unlockGems) {
+    state.coins -= machine.unlockCost;
+    state.gems -= machine.unlockGems;
+    state.totalCoinsSpent += machine.unlockCost;
+    state.unlockedMachines.push(pendingUnlockId);
+    showToast(`Unlocked ${machine.name}!`);
+    playSound("buy");
+    state.currentMachine = pendingUnlockId;
+    renderMachine();
+  }
+  closeConfirm();
+}
+
+function closeConfirm() {
+  pendingUnlockId = null;
+  document.getElementById("confirmOverlay").classList.remove("active");
 }
 
 // ===== Pull Mechanics =====

@@ -850,6 +850,66 @@ html, body {
 }
 
 /* ===== Feedback Overlay ===== */
+/* ===== Unlock Confirm Overlay ===== */
+.confirm-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(6px);
+  padding: 20px;
+}
+.confirm-overlay.active { opacity: 1; pointer-events: auto; }
+.confirm-panel {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  max-width: 360px; width: 100%;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: confirmPop 0.3s ease;
+}
+@keyframes confirmPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.confirm-icon { font-size: 48px; margin-bottom: 12px; }
+.confirm-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px; color: var(--text);
+  margin: 0 0 8px;
+}
+.confirm-desc {
+  font-size: 13px; color: var(--text-dim);
+  margin: 0 0 16px; line-height: 1.4;
+}
+.confirm-cost {
+  display: flex; gap: 12px; justify-content: center;
+  margin-bottom: 24px; font-size: 16px; font-weight: 700;
+}
+.confirm-cost .cost-coins { color: #f59e0b; }
+.confirm-cost .cost-gems { color: #a78bfa; }
+.confirm-buttons { display: flex; gap: 12px; }
+.confirm-btn {
+  flex: 1; padding: 12px; border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 15px; cursor: pointer; border: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.confirm-btn:hover { transform: scale(1.03); }
+.confirm-btn:active { transform: scale(0.97); }
+.confirm-btn.cancel {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.confirm-btn.ok {
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  color: white;
+}
+
 .feedback-overlay {
   position: fixed; inset: 0; z-index: 800;
   background: rgba(0,0,0,0.7);
