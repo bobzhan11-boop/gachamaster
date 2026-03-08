@@ -1303,6 +1303,64 @@ html, body {
   .collection-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   .multi-grid { grid-template-columns: repeat(5, 1fr); max-width: 450px; margin: 0 auto; }
 }
+
+@media (max-width: 480px) {
+  /* Top bar - compact on mobile */
+  #topBar {
+    padding: 0 10px; height: 48px;
+  }
+  .game-title { font-size: 18px; }
+  .coin-display, .gem-display {
+    padding: 4px 8px; font-size: 13px; gap: 4px;
+  }
+  .coin-icon { font-size: 14px; }
+  .gem-icon { font-size: 13px; }
+  .top-right { gap: 6px; }
+  .user-badge { padding: 4px 8px !important; gap: 4px !important; }
+  .user-name { font-size: 11px !important; max-width: 50px; overflow: hidden; text-overflow: ellipsis; }
+  .user-avatar { font-size: 14px !important; }
+  .feedback-top-btn { font-size: 16px !important; width: 30px !important; height: 30px !important; }
+  .player-count-badge { font-size: 10px !important; padding: 2px 6px !important; }
+
+  /* Game area - adjust for smaller top bar */
+  #gameArea { top: 48px; bottom: 56px; }
+
+  /* Machine tabs - scroll horizontally, don't hide */
+  .machine-tabs {
+    padding: 8px 10px; gap: 4px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .machine-tab { padding: 6px 12px; font-size: 11px; flex-shrink: 0; }
+
+  /* Machine - reduce padding */
+  .machine-wrapper { padding: 5px 10px; }
+  .machine-name { font-size: 16px; }
+  .machine-rates { font-size: 10px; gap: 4px; }
+
+  /* Bottom nav - shorter */
+  #bottomNav { height: 56px; }
+  .nav-icon { font-size: 18px; }
+  .nav-label { font-size: 10px; }
+
+  /* Globe - smaller on mobile */
+  .globe { width: 160px; height: 160px; }
+
+  /* Pull buttons */
+  .pull-buttons { gap: 8px; }
+  .pull-btn { padding: 12px 20px; font-size: 14px; }
+}
+
 @media (max-width: 400px) {
   .checkin-grid { grid-template-columns: repeat(4, 1fr); }
+  .game-title { font-size: 16px; }
+  .globe { width: 140px; height: 140px; }
+  .machine-tab { padding: 5px 10px; font-size: 10px; }
+}
+
+@media (max-width: 350px) {
+  .game-title { font-size: 14px; }
+  .coin-display, .gem-display { padding: 3px 6px; font-size: 12px; }
+  .globe { width: 120px; height: 120px; }
 }
