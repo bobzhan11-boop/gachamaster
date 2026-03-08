@@ -345,6 +345,22 @@ function unsubscribeFromChat() {
 }
 
 // ===================================================================
+// Update last_seen (marks player as "online")
+// ===================================================================
+
+async function updateLastSeen() {
+  if (!sb || !currentUser) return;
+  try {
+    await sb
+      .from('profiles')
+      .update({ last_seen: new Date().toISOString() })
+      .eq('id', currentUser.id);
+  } catch (e) {
+    console.warn('Failed to update last_seen:', e);
+  }
+}
+
+// ===================================================================
 // Player Count
 // ===================================================================
 

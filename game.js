@@ -1535,7 +1535,11 @@ async function onLoginSuccess() {
   initGame();
   startCloudAutoSave();
   startChatSubscription();
+  updateLastSeen();
   updatePlayerCount();
+
+  // Keep updating last_seen every 2 minutes so player stays "online"
+  setInterval(updateLastSeen, 120000);
 }
 
 function updateUserBadge() {
@@ -1790,7 +1794,7 @@ async function loadAndRenderPublicFeedback() {
 
 // ===== Player Count =====
 async function updatePlayerCount() {
-  if (!isSupabaseConfigured()) return;
+  if (!sb) return;
 
   const counts = await getPlayerCount();
   const badge = document.getElementById("playerCountBadge");
