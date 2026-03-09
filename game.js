@@ -339,7 +339,20 @@ function loadGame() {
 }
 
 function saveGame() {
+  // Always save to localStorage (for guests / offline fallback)
   localStorage.setItem("gachamaster-save", JSON.stringify(state));
+}
+
+function getDefaultState() {
+  return {
+    coins: 100, gems: 5, currentMachine: "starter",
+    unlockedMachines: ["starter"], collection: {},
+    upgrades: { luck: 0, multi: 0, coins: 0, auto: 0 },
+    totalPulls: 0, totalSSR: 0, totalCoinsEarned: 100,
+    totalCoinsSpent: 0, totalSold: 0,
+    checkinDay: 0, lastCheckin: null,
+    lastFreePull: 0, claimedAchievements: [],
+  };
 }
 
 loadGame();
@@ -1623,33 +1636,16 @@ async function onLoginSuccess() {
   document.getElementById("loginOverlay").classList.add("hidden");
   updateUserBadge();
 
-  // Load cloud save - prefer cloud if newer
+  // Always reset to fresh state first — never carry over another user's data
+  state = getDefaultState();
+
+  // Load this user's data from Supabase cloud (the only source of truth)
   const cloudResult = await loadFromCloud();
   if (cloudResult.data) {
-    const localSave = localStorage.getItem("gachamaster-save");
-    let useCloud = true;
-
-    if (localSave) {
-      // Compare: use whichever has more pulls (as a proxy for "more progress")
-      try {
-        const localState = JSON.parse(localSave);
-        if (localState.totalPulls > (cloudResult.data.totalPulls || 0)) {
-          useCloud = false;
-        }
-      } catch (e) {}
-    }
-
-    if (useCloud) {
-      state = { ...state, ...cloudResult.data };
-      saveGame(); // Save cloud data to localStorage too
-      showToast("Cloud save loaded!");
-    } else {
-      // Upload local data to cloud
-      saveToCloud(state);
-      showToast("Local save is newer, synced to cloud");
-    }
+    state = { ...getDefaultState(), ...cloudResult.data };
+    showToast("Cloud save loaded!");
   } else {
-    // No cloud save - upload local
+    // New user — save fresh state to cloud
     saveToCloud(state);
   }
 
@@ -1718,12 +1714,15 @@ function hideUserMenu() {
 
 async function handleLogout() {
   hideUserMenu();
-  if (!isGuest) {
+  if (!isGuest && currentUser) {
+    // Save current user's data to cloud before logging out
     await saveToCloud(state);
     await signOutUser();
   }
   currentUser = null;
   isGuest = true;
+  // Reset state so next login starts clean
+  state = getDefaultState();
   stopCloudAutoSave();
   unsubscribeFromChat();
 
@@ -1739,7 +1738,7 @@ function startCloudAutoSave() {
     if (!isGuest && currentUser) {
       saveToCloud(state);
     }
-  }, 300000); // Every 5 minutes
+  }, 30000); // Every 30 seconds
 }
 
 function stopCloudAutoSave() {
